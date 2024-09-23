@@ -70,8 +70,10 @@ public class SecurityConfigurator {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/user/profile").fullyAuthenticated())
+                        .requestMatchers("api/auth/**").permitAll()
+                        .requestMatchers("api/user/profile").authenticated() // Исправлено на authenticated
+                        .requestMatchers("/api/todos/**").authenticated() // Защита маршрутов для ToDo
+                )
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
 
 

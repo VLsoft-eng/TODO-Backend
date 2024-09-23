@@ -18,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("api/auth")
 public class SecurityController {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
@@ -63,7 +63,7 @@ public class SecurityController {
         return ResponseEntity.ok("User created");
     }
 
-    @PostMapping("signin")
+    @PostMapping("api/signin")
     ResponseEntity<?> signin(@RequestBody SigninRequest signinRequest) {
         Authentication authentication;
         try{
