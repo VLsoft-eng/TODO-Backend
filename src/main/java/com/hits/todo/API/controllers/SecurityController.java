@@ -1,6 +1,7 @@
 package com.hits.todo.API.controllers;
 
 import com.hits.todo.API.dto.SigninRequest;
+import com.hits.todo.API.dto.SigninResponse;
 import com.hits.todo.API.dto.SignupRequest;
 import com.hits.todo.core.entity.User;
 import com.hits.todo.core.repository.UserRepository;
@@ -73,7 +74,8 @@ public class SecurityController {
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtCore.generateToken(authentication);
-        return ResponseEntity.ok(jwt);
+        SigninResponse signinResponse = new SigninResponse(jwt);
+        return ResponseEntity.ok(new ResponseEntity<>(signinResponse, HttpStatus.OK));
     }
 
 }

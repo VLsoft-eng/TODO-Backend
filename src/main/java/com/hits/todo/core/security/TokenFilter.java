@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,15 @@ public class TokenFilter extends OncePerRequestFilter {
     private JwtCore jwtCore;
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    public void setJwtCore(JwtCore jwtCore) {
+        this.jwtCore = jwtCore;
+    }
+
+    @Autowired
+    public void setUserDetailsService(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -32,21 +42,17 @@ public class TokenFilter extends OncePerRequestFilter {
                 jwt = authHeader.substring(7);
             }
             if (jwt != null) {
-                try {
-                    username = jwtCore.getNameFromJwt(jwt);
-
-                } catch (RuntimeException e) {
-                    throw new RuntimeException(e);
-                }
+                username = jwtCore.getNameFromJwt(jwt);
+                System.out.println(username);
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     userDetails = userDetailsService.loadUserByUsername(username);
-                    auth = new UsernamePasswordAuthenticationToken(userDetails, null);
+                    auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(auth);
+                    System.out.println(auth);
                 }
             }
 
         } catch (Exception e) {}
         filterChain.doFilter(request, response);
-
     }
 }
