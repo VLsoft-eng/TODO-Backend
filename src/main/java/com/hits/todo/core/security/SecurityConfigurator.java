@@ -1,15 +1,12 @@
 package com.hits.todo.core.security;
 
 import com.hits.todo.core.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -70,9 +67,9 @@ public class SecurityConfigurator {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("api/auth/**").permitAll()
-                        .requestMatchers("api/user/profile").authenticated() // Исправлено на authenticated
-                        .requestMatchers("/api/todos/**").authenticated() // Защита маршрутов для ToDo
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/user/profile").authenticated()
+                        .requestMatchers("/api/todos/**").authenticated()
                 )
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
 

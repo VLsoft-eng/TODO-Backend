@@ -24,5 +24,5 @@ public class Todo {
     private Boolean isdone;
 
     @Column(name = "creator_id")
-    private String creator_id;
+    private Long creator_id;
 }

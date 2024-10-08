@@ -44,7 +44,6 @@ public class JwtCore {
                 .getBody()
                 .getSubject();
 
-        // Получаем пользователя из базы данных по username
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
